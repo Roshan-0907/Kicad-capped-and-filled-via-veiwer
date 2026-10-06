@@ -19,17 +19,12 @@ The result looks like a trace under solder mask, matching JLCPCB's
 |---|---|
 | ![before](docs/before.png) | ![after](docs/after.png) |
 
-## Seeing vias on copper pours
+## Via markers (removed)
 
-A tented, filled and capped via is the same copper under the same mask as a pour
-or trace, so in the 3D viewer it disappears into it (as it would on the real
-board). The second button, **Mark Vias in 3D Viewer**, draws a disc over each via
-on **User.Eco1** (top) and **B.Adhesive** (bottom). Neither is a fabrication layer
-unless you plot them, so your Gerbers are unaffected.
-
-In the 3D viewer's Appearance panel, check that **User.Eco1** (on by default) and **Adhesive** (off by default, for the
-bottom) and click the swatch to pick a colour. **Remove Via Markers** (Tools →
-External Plugins) deletes them again; both are one undo step.
+Versions 1.1.x had a button that drew discs over the vias so they stood out in the 3D
+viewer. They looked wrong (dark, raised circles), so the feature is gone. If your board
+has them, select the vias (or none for all) and run **Remove Via Markers** from
+Tools → External Plugins.
 
 ## Requirements
 

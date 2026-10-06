@@ -25,7 +25,6 @@ import sys
 
 from kipy import KiCad
 from kipy.board_types import BoardCircle, Via
-from kipy.geometry import Vector2
 from kipy.proto.board import board_types_pb2 as bt
 
 # First KiCad release whose 3D viewer hides the hole of capped vias
@@ -83,100 +82,49 @@ def target_vias(board, use_all: bool) -> list:
     return list(board.get_vias())
 
 
-# Marker layers.  A tented, filled and capped via is the same copper under the same mask
-# as a zone or trace, so in the 3D viewer it cannot be told apart from them.  The marker is
-# a filled disc the size of the via on a layer that is not a fabrication output, drawn by the
-# 3D viewer in whatever colour the layer has there.
-#
-# The 3D viewer only puts layers *above* the board on the front for F.* and User.* layers
-# and below it for B.* layers, so the back marker uses B.Adhesive.
-MARKER_FRONT = bt.BL_Eco1_User
-MARKER_BACK = bt.BL_B_Adhes
-MARKER_LAYERS = (MARKER_FRONT, MARKER_BACK)
-
-
-def marker_layers_for(via: Via) -> list:
-    """Marker layers a via needs: front if it reaches F.Cu, back if it reaches B.Cu."""
-    drill = via.proto.pad_stack.drill
-    layers = []
-
-    if drill.start_layer == bt.BL_F_Cu:
-        layers.append(MARKER_FRONT)
-
-    if drill.end_layer == bt.BL_B_Cu:
-        layers.append(MARKER_BACK)
-
-    return layers
+# Versions 1.1.x of this plugin drew marker discs over the vias on these layers.  The
+# markers were removed again (they looked wrong in the 3D viewer), but boards that had them
+# applied can still be cleaned up with "Remove Via Markers".
+OLD_MARKER_LAYERS = (bt.BL_User_1, bt.BL_Eco1_User, bt.BL_B_Adhes)
 
 
 def marker_key(center, radius: int, layer) -> tuple:
     return (round(center.x), round(center.y), round(radius), layer)
 
 
-def make_marker(via: Via, layer) -> BoardCircle:
-    radius = via.diameter // 2
-    circle = BoardCircle()
-    circle.layer = layer
-    circle.center = via.position
-    circle.radius_point = Vector2.from_xy(via.position.x + radius, via.position.y)
-    circle.attributes.fill.filled = True
-    circle.attributes.stroke.width = 0
-    return circle
-
-
-def existing_markers(board) -> dict:
-    """Marker circles already on the board, by (x, y, radius, layer)."""
-    found = {}
-
-    for item in board.get_shapes():
-        if isinstance(item, BoardCircle) and item.layer in MARKER_LAYERS:
-            found[marker_key(item.center, item.radius(), item.layer)] = item
-
-    return found
-
-
-def run_markers(mode: str, use_all: bool = False) -> int:
-    """Add (mode "mark") or remove (mode "unmark") the via markers."""
+def run_unmark(use_all: bool = False) -> int:
+    """Delete circles left by the old marker feature: one per via and old marker layer."""
     kicad = KiCad()
     board = kicad.get_board()
     vias = target_vias(board, use_all)
 
-    if not vias:
-        print("No vias found on the board.", file=sys.stderr)
-        return 0
+    wanted = {
+        marker_key(via.position, via.diameter // 2, layer)
+        for via in vias
+        for layer in OLD_MARKER_LAYERS
+    }
+    old = [
+        item
+        for item in board.get_shapes()
+        if isinstance(item, BoardCircle)
+        and item.layer in OLD_MARKER_LAYERS
+        and marker_key(item.center, item.radius(), item.layer) in wanted
+    ]
 
-    present = existing_markers(board)
-    wanted = {}
-
-    for via in vias:
-        for layer in marker_layers_for(via):
-            wanted[marker_key(via.position, via.diameter // 2, layer)] = (via, layer)
-
-    if mode == "mark":
-        new = [make_marker(via, layer) for key, (via, layer) in wanted.items() if key not in present]
-        message = f"Marked {len(new)} via sides for the 3D viewer"
-        action = lambda: board.create_items(new)
-        count = len(new)
-    else:
-        old = [present[key] for key in wanted if key in present]
-        message = f"Removed {len(old)} via markers"
-        action = lambda: board.remove_items(old)
-        count = len(old)
-
-    if not count:
-        print("Nothing to do: vias already " + ("marked." if mode == "mark" else "unmarked."))
+    if not old:
+        print("No via markers found.")
         return 0
 
     commit = board.begin_commit()
 
     try:
-        action()
+        board.remove_items(old)
     except Exception:
         board.drop_commit(commit)
         raise
 
-    board.push_commit(commit, message)
-    print(message + ".")
+    board.push_commit(commit, f"Removed {len(old)} via markers")
+    print(f"Removed {len(old)} via markers.")
     return 0
 
 
@@ -233,7 +181,7 @@ def main(argv=None, mode=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
 
     if mode is None:
-        parser.add_argument("mode", choices=["apply", "clear", "mark", "unmark"])
+        parser.add_argument("mode", choices=["apply", "clear", "unmark"])
 
     parser.add_argument(
         "--all", action="store_true", help="act on every via even if some are selected"
@@ -241,8 +189,8 @@ def main(argv=None, mode=None) -> int:
     args = parser.parse_args(argv)
     mode = mode or args.mode
 
-    if mode in ("mark", "unmark"):
-        return run_markers(mode, args.all)
+    if mode == "unmark":
+        return run_unmark(args.all)
 
     return run(mode, args.all)
 

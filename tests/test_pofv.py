@@ -86,28 +86,54 @@ def test_target_vias_falls_back_to_all_when_no_via_selected():
     assert pofv.target_vias(board, use_all=False) == [a, b]
 
 
-def test_marker_layers_follow_which_outer_layers_the_via_reaches():
-    through = Via()
-    through.proto.pad_stack.drill.start_layer = bt.BL_F_Cu
-    through.proto.pad_stack.drill.end_layer = bt.BL_B_Cu
+def _circle(x, y, radius, layer):
+    from kipy.board_types import BoardCircle
 
-    blind = Via()
-    blind.proto.pad_stack.drill.start_layer = bt.BL_F_Cu
-    blind.proto.pad_stack.drill.end_layer = bt.BL_In1_Cu
-
-    assert pofv.marker_layers_for(through) == [pofv.MARKER_FRONT, pofv.MARKER_BACK]
-    assert pofv.marker_layers_for(blind) == [pofv.MARKER_FRONT]
+    c = BoardCircle()
+    c.layer = layer
+    c.center = Vector2.from_xy(x, y)
+    c.radius_point = Vector2.from_xy(x + radius, y)
+    return c
 
 
-def test_make_marker_is_a_filled_disc_the_size_of_the_via():
+def test_unmark_removes_only_old_marker_circles_over_target_vias(monkeypatch):
     via = Via()
     via.position = Vector2.from_xy(1_000_000, 2_000_000)
     via.diameter = 800_000
 
-    marker = pofv.make_marker(via, pofv.MARKER_FRONT)
+    mine = [_circle(1_000_000, 2_000_000, 400_000, layer) for layer in pofv.OLD_MARKER_LAYERS]
+    other_size = _circle(1_000_000, 2_000_000, 300_000, bt.BL_Eco1_User)
+    elsewhere = _circle(5_000_000, 2_000_000, 400_000, bt.BL_Eco1_User)
+    other_layer = _circle(1_000_000, 2_000_000, 400_000, bt.BL_Dwgs_User)
 
-    assert marker.layer == pofv.MARKER_FRONT
-    assert marker.attributes.fill.filled
-    assert round(marker.radius()) == 400_000
-    assert pofv.marker_key(marker.center, marker.radius(), marker.layer) == (
-        1_000_000, 2_000_000, 400_000, pofv.MARKER_FRONT)
+    class Board:
+        removed = None
+
+        def get_vias(self):
+            return [via]
+
+        def get_selection(self):
+            return []
+
+        def get_shapes(self):
+            return mine + [other_size, elsewhere, other_layer]
+
+        def begin_commit(self):
+            return object()
+
+        def remove_items(self, items):
+            self.removed = list(items)
+
+        def push_commit(self, commit, message):
+            pass
+
+    board = Board()
+
+    class FakeKiCad:
+        def get_board(self):
+            return board
+
+    monkeypatch.setattr(pofv, "KiCad", FakeKiCad)
+
+    assert pofv.run_unmark() == 0
+    assert board.removed == mine

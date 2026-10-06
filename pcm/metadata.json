@@ -2,7 +2,7 @@
   "$schema": "https://go.kicad.org/pcm/schemas/v2",
   "name": "Filled & Capped Vias (POFV)",
   "description": "Show filled and capped (POFV) vias under solder mask in the 3D viewer",
-  "description_full": "Sets the selected vias (or all vias) to filled, capped and tented in one undoable step. KiCad 10.0.6+ then draws them in the 3D viewer without a hole and covered by solder mask, looking like a trace, which matches how JLCPCB capped and filled vias come out. A second action draws a marker over each via on a non-fabrication layer so vias stay visible on copper pours. Fixes the case where the via dialog's Type VII preset leaves vias not tented, so they show as bare copper even with Tent vias enabled.",
+  "description_full": "Sets the selected vias (or all vias) to filled, capped and tented in one undoable step. KiCad 10.0.6+ then draws them in the 3D viewer without a hole and covered by solder mask, looking like a trace, which matches how JLCPCB capped and filled vias come out. Fixes the case where the via dialog's Type VII preset leaves vias not tented, so they show as bare copper even with Tent vias enabled.",
   "identifier": "io.github.roshan-0907.pofv-via-3d",
   "type": "plugin",
   "author": {
@@ -25,14 +25,14 @@
   ],
   "versions": [
     {
-      "version": "1.1.1",
+      "version": "1.2.0",
       "status": "stable",
       "kicad_version": "10.0",
       "runtime": "ipc",
-      "download_url": "https://github.com/Roshan-0907/Kicad-capped-and-filled-via-veiwer/releases/download/v1.1.1/io.github.roshan-0907.pofv-via-3d-1.1.1.zip",
-      "download_sha256": "267e133b2cddb7c18b18a0cbed21032da5d42ec684333a39f85607decc324b3c",
-      "download_size": 16532,
-      "install_size": 20923
+      "download_url": "https://github.com/Roshan-0907/Kicad-capped-and-filled-via-veiwer/releases/download/v1.2.0/io.github.roshan-0907.pofv-via-3d-1.2.0.zip",
+      "download_sha256": "06bb6e3bf609514894f6e20ee3983a6fc5c97a5f3d54096de1687b05ca1d2be1",
+      "download_size": 13614,
+      "install_size": 16885
     }
   ]
 }

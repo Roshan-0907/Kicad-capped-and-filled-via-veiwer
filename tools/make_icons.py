@@ -51,7 +51,7 @@ def draw(kind: str, theme: str, size: int) -> Image.Image:
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
 
-    for kind in ("apply", "clear", "mark", "unmark"):
+    for kind in ("apply", "clear", "unmark"):
         for theme in THEMES:
             for size in (24, 48):
                 draw(kind, theme, size).save(OUT / f"{kind}_{theme}_{size}.png")

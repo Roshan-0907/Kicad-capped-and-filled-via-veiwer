@@ -43,27 +43,9 @@
       ]
     },
     {
-      "identifier": "mark-vias",
-      "name": "Mark Vias in 3D Viewer",
-      "description": "Draw a marker on User.Eco1 (top) and B.Adhesive (bottom) over the selected vias, or all vias, so they stand out in the 3D viewer. Markers are not fabrication layers.",
-      "show-button": true,
-      "scopes": [
-        "pcb"
-      ],
-      "entrypoint": "mark_vias.py",
-      "icons-light": [
-        "icons/mark_light_24.png",
-        "icons/mark_light_48.png"
-      ],
-      "icons-dark": [
-        "icons/mark_dark_24.png",
-        "icons/mark_dark_48.png"
-      ]
-    },
-    {
       "identifier": "unmark-vias",
       "name": "Remove Via Markers",
-      "description": "Remove the via markers from User.Eco1 and B.Adhesive for the selected vias, or all vias",
+      "description": "Delete the marker discs added by plugin versions 1.1.x (User.1, User.Eco1 and B.Adhesive) over the selected vias, or all vias",
       "show-button": false,
       "scopes": [
         "pcb"
