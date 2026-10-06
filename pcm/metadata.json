@@ -1,0 +1,38 @@
+{
+  "$schema": "https://go.kicad.org/pcm/schemas/v2",
+  "name": "Filled & Capped Vias (POFV)",
+  "description": "Show filled and capped (POFV) vias under solder mask in the 3D viewer",
+  "description_full": "Sets the selected vias (or all vias) to filled, capped and tented in one undoable step. KiCad 10.0.6+ then draws them in the 3D viewer without a hole and covered by solder mask, looking like a trace, which matches how JLCPCB capped and filled vias come out. Fixes the case where the via dialog's Type VII preset leaves vias not tented, so they show as bare copper even with Tent vias enabled.",
+  "identifier": "io.github.roshan-0907.pofv-via-3d",
+  "type": "plugin",
+  "author": {
+    "name": "Roshan-0907",
+    "contact": {
+      "web": "https://github.com/Roshan-0907"
+    }
+  },
+  "license": "MIT",
+  "resources": {
+    "homepage": "https://github.com/Roshan-0907/Kicad-capped-and-filled-via-veiwer",
+    "issues": "https://github.com/Roshan-0907/Kicad-capped-and-filled-via-veiwer/issues"
+  },
+  "tags": [
+    "via",
+    "viewer-3d",
+    "ipc-4761",
+    "jlcpcb",
+    "manufacturing"
+  ],
+  "versions": [
+    {
+      "version": "1.0.0",
+      "status": "stable",
+      "kicad_version": "10.0",
+      "runtime": "ipc",
+      "download_url": "https://github.com/Roshan-0907/Kicad-capped-and-filled-via-veiwer/releases/download/v1.0.0/io.github.roshan-0907.pofv-via-3d-1.0.0.zip",
+      "download_sha256": "b313fc60be4101a93d66dae37af7ff87ef011e664e1e678858874c0079b4a58f",
+      "download_size": 10822,
+      "install_size": 13336
+    }
+  ]
+}
