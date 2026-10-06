@@ -1,0 +1,46 @@
+{
+  "identifier": "io.github.roshan-0907.pofv-via-3d",
+  "name": "Filled & Capped Vias (POFV)",
+  "description": "Marks vias as filled, capped and tented so the 3D viewer shows them solid under solder mask, like traces",
+  "runtime": {
+    "type": "python"
+  },
+  "actions": [
+    {
+      "identifier": "apply-pofv",
+      "name": "Make Vias Filled & Capped (POFV)",
+      "description": "Set the selected vias (or all vias if none are selected) to filled, capped and tented on both sides",
+      "show-button": true,
+      "scopes": [
+        "pcb"
+      ],
+      "entrypoint": "apply_pofv.py",
+      "icons-light": [
+        "icons/apply_light_24.png",
+        "icons/apply_light_48.png"
+      ],
+      "icons-dark": [
+        "icons/apply_dark_24.png",
+        "icons/apply_dark_48.png"
+      ]
+    },
+    {
+      "identifier": "clear-pofv",
+      "name": "Remove Filled & Capped from Vias",
+      "description": "Return filling and capping of the selected vias (or all vias if none are selected) to the board default",
+      "show-button": false,
+      "scopes": [
+        "pcb"
+      ],
+      "entrypoint": "clear_pofv.py",
+      "icons-light": [
+        "icons/clear_light_24.png",
+        "icons/clear_light_48.png"
+      ],
+      "icons-dark": [
+        "icons/clear_dark_24.png",
+        "icons/clear_dark_48.png"
+      ]
+    }
+  ]
+}
