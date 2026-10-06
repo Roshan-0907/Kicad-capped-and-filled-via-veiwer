@@ -45,7 +45,7 @@
     {
       "identifier": "mark-vias",
       "name": "Mark Vias in 3D Viewer",
-      "description": "Draw a marker on User.1 (top) and B.Adhesive (bottom) over the selected vias, or all vias, so they stand out in the 3D viewer. Markers are not fabrication layers.",
+      "description": "Draw a marker on User.Eco1 (top) and B.Adhesive (bottom) over the selected vias, or all vias, so they stand out in the 3D viewer. Markers are not fabrication layers.",
       "show-button": true,
       "scopes": [
         "pcb"
@@ -63,7 +63,7 @@
     {
       "identifier": "unmark-vias",
       "name": "Remove Via Markers",
-      "description": "Remove the via markers from User.1 and B.Adhesive for the selected vias, or all vias",
+      "description": "Remove the via markers from User.Eco1 and B.Adhesive for the selected vias, or all vias",
       "show-button": false,
       "scopes": [
         "pcb"

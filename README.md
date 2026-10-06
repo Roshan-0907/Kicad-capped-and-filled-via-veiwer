@@ -24,10 +24,10 @@ The result looks like a trace under solder mask, matching JLCPCB's
 A tented, filled and capped via is the same copper under the same mask as a pour
 or trace, so in the 3D viewer it disappears into it (as it would on the real
 board). The second button, **Mark Vias in 3D Viewer**, draws a disc over each via
-on **User.1** (top) and **B.Adhesive** (bottom). Neither is a fabrication layer
+on **User.Eco1** (top) and **B.Adhesive** (bottom). Neither is a fabrication layer
 unless you plot them, so your Gerbers are unaffected.
 
-In the 3D viewer's Appearance panel, switch on **User.1** (and **Adhesive** for the
+In the 3D viewer's Appearance panel, check that **User.Eco1** (on by default) and **Adhesive** (off by default, for the
 bottom) and click the swatch to pick a colour. **Remove Via Markers** (Tools →
 External Plugins) deletes them again; both are one undo step.
 

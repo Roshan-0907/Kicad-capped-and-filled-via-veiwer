@@ -90,7 +90,7 @@ def target_vias(board, use_all: bool) -> list:
 #
 # The 3D viewer only puts layers *above* the board on the front for F.* and User.* layers
 # and below it for B.* layers, so the back marker uses B.Adhesive.
-MARKER_FRONT = bt.BL_User_1
+MARKER_FRONT = bt.BL_Eco1_User
 MARKER_BACK = bt.BL_B_Adhes
 MARKER_LAYERS = (MARKER_FRONT, MARKER_BACK)
 
