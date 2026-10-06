@@ -41,6 +41,42 @@
         "icons/clear_dark_24.png",
         "icons/clear_dark_48.png"
       ]
+    },
+    {
+      "identifier": "mark-vias",
+      "name": "Mark Vias in 3D Viewer",
+      "description": "Draw a marker on User.1 (top) and B.Adhesive (bottom) over the selected vias, or all vias, so they stand out in the 3D viewer. Markers are not fabrication layers.",
+      "show-button": true,
+      "scopes": [
+        "pcb"
+      ],
+      "entrypoint": "mark_vias.py",
+      "icons-light": [
+        "icons/mark_light_24.png",
+        "icons/mark_light_48.png"
+      ],
+      "icons-dark": [
+        "icons/mark_dark_24.png",
+        "icons/mark_dark_48.png"
+      ]
+    },
+    {
+      "identifier": "unmark-vias",
+      "name": "Remove Via Markers",
+      "description": "Remove the via markers from User.1 and B.Adhesive for the selected vias, or all vias",
+      "show-button": false,
+      "scopes": [
+        "pcb"
+      ],
+      "entrypoint": "unmark_vias.py",
+      "icons-light": [
+        "icons/unmark_light_24.png",
+        "icons/unmark_light_48.png"
+      ],
+      "icons-dark": [
+        "icons/unmark_dark_24.png",
+        "icons/unmark_dark_48.png"
+      ]
     }
   ]
 }

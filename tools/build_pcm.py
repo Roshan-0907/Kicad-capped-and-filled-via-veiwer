@@ -26,7 +26,8 @@ IDENTIFIER = "io.github.roshan-0907.pofv-via-3d"
 REPO = "https://github.com/Roshan-0907/Kicad-capped-and-filled-via-veiwer"
 
 # Files of the plugin that go into the package (plugins/ in the archive).
-PLUGIN_FILES = ["plugin.json", "pofv.py", "apply_pofv.py", "clear_pofv.py", "requirements.txt"]
+PLUGIN_FILES = ["plugin.json", "pofv.py", "apply_pofv.py", "clear_pofv.py", "mark_vias.py",
+                "unmark_vias.py", "requirements.txt"]
 
 
 def package_metadata(version: str) -> dict:
@@ -38,7 +39,7 @@ def package_metadata(version: str) -> dict:
             "Sets the selected vias (or all vias) to filled, capped and tented in one undoable "
             "step. KiCad 10.0.6+ then draws them in the 3D viewer without a hole and covered by "
             "solder mask, looking like a trace, which matches how JLCPCB capped and filled vias "
-            "come out. Fixes the case where the via dialog's Type VII preset leaves vias not "
+            "come out. A second action draws a marker over each via on a non-fabrication layer so vias stay visible on copper pours. Fixes the case where the via dialog's Type VII preset leaves vias not "
             "tented, so they show as bare copper even with Tent vias enabled."
         ),
         "identifier": IDENTIFIER,

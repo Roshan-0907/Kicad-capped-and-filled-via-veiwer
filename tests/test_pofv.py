@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 from kipy.board_types import Via
+from kipy.geometry import Vector2
 from kipy.proto.board import board_types_pb2 as bt
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "pofv_via_3d"))
@@ -83,3 +84,30 @@ def test_target_vias_falls_back_to_all_when_no_via_selected():
     board = FakeBoard([a, b], [object()])
 
     assert pofv.target_vias(board, use_all=False) == [a, b]
+
+
+def test_marker_layers_follow_which_outer_layers_the_via_reaches():
+    through = Via()
+    through.proto.pad_stack.drill.start_layer = bt.BL_F_Cu
+    through.proto.pad_stack.drill.end_layer = bt.BL_B_Cu
+
+    blind = Via()
+    blind.proto.pad_stack.drill.start_layer = bt.BL_F_Cu
+    blind.proto.pad_stack.drill.end_layer = bt.BL_In1_Cu
+
+    assert pofv.marker_layers_for(through) == [pofv.MARKER_FRONT, pofv.MARKER_BACK]
+    assert pofv.marker_layers_for(blind) == [pofv.MARKER_FRONT]
+
+
+def test_make_marker_is_a_filled_disc_the_size_of_the_via():
+    via = Via()
+    via.position = Vector2.from_xy(1_000_000, 2_000_000)
+    via.diameter = 800_000
+
+    marker = pofv.make_marker(via, pofv.MARKER_FRONT)
+
+    assert marker.layer == pofv.MARKER_FRONT
+    assert marker.attributes.fill.filled
+    assert round(marker.radius()) == 400_000
+    assert pofv.marker_key(marker.center, marker.radius(), marker.layer) == (
+        1_000_000, 2_000_000, 400_000, pofv.MARKER_FRONT)

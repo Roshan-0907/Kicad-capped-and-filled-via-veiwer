@@ -19,6 +19,18 @@ The result looks like a trace under solder mask, matching JLCPCB's
 |---|---|
 | ![before](docs/before.png) | ![after](docs/after.png) |
 
+## Seeing vias on copper pours
+
+A tented, filled and capped via is the same copper under the same mask as a pour
+or trace, so in the 3D viewer it disappears into it (as it would on the real
+board). The second button, **Mark Vias in 3D Viewer**, draws a disc over each via
+on **User.1** (top) and **B.Adhesive** (bottom). Neither is a fabrication layer
+unless you plot them, so your Gerbers are unaffected.
+
+In the 3D viewer's Appearance panel, switch on **User.1** (and **Adhesive** for the
+bottom) and click the swatch to pick a colour. **Remove Via Markers** (Tools →
+External Plugins) deletes them again; both are one undo step.
+
 ## Requirements
 
 KiCad **10.0.6 or newer** (older versions still draw the hole), with

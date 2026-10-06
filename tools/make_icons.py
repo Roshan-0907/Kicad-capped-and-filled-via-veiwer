@@ -32,7 +32,11 @@ def draw(kind: str, theme: str, size: int) -> Image.Image:
     d.rounded_rectangle((1 * s, 1 * s, 23 * s, 23 * s), radius=4 * s, fill=mask,
                         outline=outline, width=max(1, round(1 * s)))
 
-    if kind == "apply":
+    if kind in ("mark", "unmark"):
+        ring = "#ff9020"
+        circle(7, ring)
+        circle(4.5, masked_cu if kind == "mark" else mask)
+    elif kind == "apply":
         # Via pad under mask, no hole: same shade as a masked trace
         d.rectangle((10.5 * s, 1 * s, 13.5 * s, 12 * s), fill=masked_cu)
         circle(7, masked_cu)
@@ -47,7 +51,7 @@ def draw(kind: str, theme: str, size: int) -> Image.Image:
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
 
-    for kind in ("apply", "clear"):
+    for kind in ("apply", "clear", "mark", "unmark"):
         for theme in THEMES:
             for size in (24, 48):
                 draw(kind, theme, size).save(OUT / f"{kind}_{theme}_{size}.png")
